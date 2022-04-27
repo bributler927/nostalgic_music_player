@@ -1,8 +1,8 @@
 {
-  "name": "lower-case-dashed-name-of-project",
-  "repository": "REPOSITORY-NAME-AS-IT-APPEARS-IN-GITHUB-URL",
+  "name": "nostalgic-music-player",
+  "repository": "nostalgic_music_player",
   "version": "0.1.0",
-  "title": "PROJECT TITLE HERE",
+  "title": "Nostalgic Music Player",
   "description": "SHORT DESCRIPTION OF PROJECT HERE. ONE TO TWO SENTENCES MAX",
   "keywords": [
     "Princeton",
@@ -10,9 +10,12 @@
     "three.js",
     "COS 426",
     "ivy league",
-    "keyword1",
-    "keyword2",
-    "...",
+    "music visuals",
+    "music",
+    "beats",
+    "frequency",
+    "part",
+    "shapes",
     "this last entry CANNOT have a comma after it ->"
   ],
   "scripts": {

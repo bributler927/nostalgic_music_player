@@ -13,6 +13,7 @@ class SeedScene extends Scene {
             gui: new Dat.GUI(), // Create GUI for scene
             rotationSpeed: 1,
             updateList: [],
+            song: ["no song"],
         };
 
         // Set background to a nice color
@@ -26,6 +27,10 @@ class SeedScene extends Scene {
 
         // Populate GUI
         this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
+        this.state.gui.add(this.state, 'song', ["no song", "Hallelujah by Jeff Buckley",
+                                                "The Chain by Fleetwood Mac", "Hey Ya by Outkast",
+                                            "Patience by Guns N' Roses", "Take Me Home, Country Roads by John Denver",
+                                        "Bridge Over Troubled Water by Simon and Garfunkel", "Despacito by Luisi Fonsi"]);
     }
 
     addToUpdateList(object) {

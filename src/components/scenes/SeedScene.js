@@ -1,6 +1,6 @@
 import * as Dat from 'dat.gui';
 import { Scene, Color } from 'three';
-import { Flower, Land } from 'objects';
+import { Flower, Land, Blob } from 'objects';
 import { BasicLights } from 'lights';
 
 class SeedScene extends Scene {
@@ -20,11 +20,12 @@ class SeedScene extends Scene {
         this.background = new Color(0x7ec0ee);
 
         // Add meshes to scene
-        const land = new Land();
-        const flower = new Flower(this);
+        //const land = new Land();
+        //const flower = new Flower(this);
         const lights = new BasicLights();
-        this.add(land, flower, lights);
-
+        const blob = new Blob(this);
+        this.add(lights, blob);
+        
         // Populate GUI
         this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
         this.state.gui.add(this.state, 'song', ["no song", "Hallelujah by Jeff Buckley",
@@ -46,6 +47,8 @@ class SeedScene extends Scene {
             obj.update(timeStamp);
         }
     }
+
+    //blob.update();
 }
 
 export default SeedScene;

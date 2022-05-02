@@ -19,7 +19,7 @@ const json = require('./Spotify-2000.json');
 var data = JSON.parse(JSON.stringify(json));
 
 // Initialize core ThreeJS components
-const SEPARATION = 100, AMOUNTX = 50, AMOUNTY = 50;
+const SEPARATION = 70, AMOUNTX = 50, AMOUNTY = 50;
 
 const scene = new SeedScene();
 const camera = new PerspectiveCamera();
@@ -28,7 +28,7 @@ let particles,  count = 0;
 
 // Set up camera
 // adjusted to move the wave behind the blob
-camera.position.set(6, 0, -10);
+camera.position.set(20, 0, -5);
 camera.lookAt(new Vector3(0, 0, 0));
 
 const numParticles = AMOUNTX * AMOUNTY;
@@ -134,11 +134,11 @@ const onAnimationFrameHandler = (timeStamp) => {
         for ( let iy = 0; iy < AMOUNTY; iy ++ ) {
 
             // originally 50
-            positions[ i + 1 ] = ( Math.sin( ( ix + count ) * 0.3 ) * 40 ) +
-                            ( Math.sin( ( iy + count ) * 0.5 ) * 40 );
+            positions[ i + 1 ] = ( Math.sin( ( ix + count ) * 0.3 ) *80 ) +
+                            ( Math.sin( ( iy + count ) * 0.5 ) * 80 );
 
             // originally times 20 -- if we make the multiplication numbers smaller, makes waves smaller/ tamer
-            scales[ j ] = ( Math.sin( ( ix + count ) * 0.3 ) + 1 ) * 20 +
+            scales[ j ] = ( Math.sin( ( ix + count ) * 0.3 ) + 1 ) * 15 +
                             ( Math.sin( ( iy + count ) * 0.5 ) + 1 ) * 20;
 
             i += 3;

@@ -11,6 +11,8 @@ import { WebGLRenderer, PerspectiveCamera, Vector3, BufferGeometry, BufferAttrib
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SeedScene } from 'scenes';
 import perlinNoise3d from 'perlin-noise-3d';
+import { currSong } from './components/scenes/SeedScene';
+import { chooseColor } from './components/adjustments';
 
 //import JSON file
 const json = require('./Spotify-2000.json');
@@ -28,15 +30,6 @@ let particles,  count = 0;
 // adjusted to move the wave behind the blob
 camera.position.set(6, 0, -10);
 camera.lookAt(new Vector3(0, 0, 0));
-
-//scene.update;
-console.log(scene.state);
-var currSong = scene.state.song;
-console.log(currSong);
-if (scene.state.song == "Patience - Guns N' Roses") {
-    var audio = new Audio("src/components/sounds/Patience.mp3");
-    audio.play();
-}
 
 const numParticles = AMOUNTX * AMOUNTY;
 
@@ -103,8 +96,7 @@ scene.add( particles );
 var sphere_geometry = new IcosahedronGeometry(20, 3);
 var Smaterial = new MeshStandardMaterial( {
     //change color of blob here
-    color: '#87ceeb',
-
+    color: 'white',
     roughness: 0.45,
     metalness: 0.75,
 
@@ -157,7 +149,7 @@ const onAnimationFrameHandler = (timeStamp) => {
     }
 
      //can change this for bubble frequency
-     var time = performance.now() * 0.003;
+     var time = performance.now() * 0.001;
 
      // change 'k' value for more spikes
     var k = 1;

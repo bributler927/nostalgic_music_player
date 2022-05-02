@@ -93,17 +93,6 @@ const material = new ShaderMaterial( {
 particles = new Points( geometry, material );
 scene.add( particles );
 
-var sphere_geometry = new IcosahedronGeometry(20, 3);
-var Smaterial = new MeshStandardMaterial( {
-    //change color of blob here
-    color: 'white',
-    roughness: 0.45,
-    metalness: 0.75,
-
-});
-
-var sphere = new Mesh(sphere_geometry, Smaterial);
-scene.add (sphere);
 
 // Set up renderer, canvas, and minor CSS adjustments
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -147,26 +136,6 @@ const onAnimationFrameHandler = (timeStamp) => {
         }
 
     }
-
-     //can change this for bubble frequency
-     var time = performance.now() * 0.001;
-
-     // change 'k' value for more spikes
-    var k = 1;
-    for (var s = 0; s < sphere.geometry.vertices.length; s++) {
-        var p = sphere.geometry.vertices[s];
-        var n = new perlinNoise3d();
-        var noise = n.noiseSeed(27);
-        let perlin = noise.get(p.x * k + time, p.y * k, p.z * k);
-
-        //increase this for more extreme ball
-        //0.7 is default/low energy
-        p.normalize().multiplyScalar(1 + 0.7 * perlin);
-    }
-    sphere.geometry.computeVertexNormals();
-    sphere.geometry.normalsNeedUpdate = true;
-    sphere.geometry.verticesNeedUpdate = true;
-
 
     particles.geometry.attributes.position.needsUpdate = true;
     particles.geometry.attributes.scale.needsUpdate = true;

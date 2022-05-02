@@ -1,5 +1,6 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color, Fog } from 'three';
+import { Scene, Color, Fog, IcosahedronGeometry, 
+        MeshStandardMaterial, Mesh } from 'three';
 import { BasicLights } from 'lights';
 import { chooseColor } from '../adjustments';
 
@@ -13,6 +14,17 @@ var despacito = new Audio("src/components/sounds/Despacito.mp3");
 var heyya = new Audio("src/components/sounds/Hey_Ya!.mp3");
 var country = new Audio("src/components/sounds/Take_Me_Home,Country_Roads.mp3");
 var chain = new Audio("src/components/sounds/The_Chain.mp3");
+
+//add sphere to scene
+var sphere_geometry = new IcosahedronGeometry(20, 3);
+        var Smaterial = new MeshStandardMaterial( {
+            //change color of blob here
+            color: 'white',
+            roughness: 0.45,
+            metalness: 0.75,
+                                                
+            });
+var sphere = new Mesh(sphere_geometry, Smaterial);
 
 class SeedScene extends Scene {
     constructor() {
@@ -40,12 +52,14 @@ class SeedScene extends Scene {
         // Add meshes to scene
         const lights = new BasicLights();
         this.add(lights);
+        this.add(sphere);
         
         // Populate GUI
         //this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
         this.state.gui.add(this.state, 'song', ['No Song', 'Bridge Over Troubled Water - Simon & Garfunkel', 'Despacito - Luis Fonsi', 
                                                 'Hallelujah - Jeff Buckley', 'Hey Ya - Outkast', "Patience - Guns N' Roses", 
                                                 'The Chain - Fleetwood Mac', 'Take Me Home Country Roads - John Denver']);
+
 
     }
 
@@ -57,6 +71,25 @@ class SeedScene extends Scene {
             //calls song player helper function
             this.chooseSong();
         }
+
+        //can change this for bubble frequency
+        var time = performance.now() * 0.001;
+
+        // change 'k' value for more spikes
+        var k = 1;
+        for (var s = 0; s < sphere.geometry.vertices.length; s++) {
+            var p = sphere.geometry.vertices[s];
+            var n = new perlinNoise3d();
+            var noise = n.noiseSeed(27);
+            let perlin = noise.get(p.x * k + time, p.y * k, p.z * k);
+
+            //increase this for more extreme ball
+            //0.7 is default/low energy
+            p.normalize().multiplyScalar(1 + 0.7 * perlin);
+        }
+        sphere.geometry.computeVertexNormals();
+        sphere.geometry.normalsNeedUpdate = true;
+        sphere.geometry.verticesNeedUpdate = true;
     }
 
     //helper function that takes selected song and plays the audio

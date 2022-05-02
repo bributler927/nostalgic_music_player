@@ -6,10 +6,15 @@
  * handles window resizes.
  *
  */
-import { WebGLRenderer, PerspectiveCamera, Vector3, BufferGeometry, BufferAttribute, ShaderMaterial, Color, Points } from 'three';
+import { WebGLRenderer, PerspectiveCamera, Vector3, BufferGeometry, BufferAttribute, ShaderMaterial, Color, 
+            Points, IcosahedronGeometry, MeshStandardMaterial, Mesh, Audio } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SeedScene } from 'scenes';
+import perlinNoise3d from 'perlin-noise-3d';
 
+//import JSON file
+const json = require('./Spotify-2000.json');
+var data = JSON.parse(JSON.stringify(json));
 
 // Initialize core ThreeJS components
 const SEPARATION = 100, AMOUNTX = 50, AMOUNTY = 50;
@@ -19,10 +24,19 @@ const camera = new PerspectiveCamera();
 const renderer = new WebGLRenderer({ antialias: true });
 let particles,  count = 0;
 
-
 // Set up camera
-camera.position.set(6, 3, -10);
+// adjusted to move the wave behind the blob
+camera.position.set(6, 0, -10);
 camera.lookAt(new Vector3(0, 0, 0));
+
+//scene.update;
+console.log(scene.state);
+var currSong = scene.state.song;
+console.log(currSong);
+if (scene.state.song == "Patience - Guns N' Roses") {
+    var audio = new Audio("src/components/sounds/Patience.mp3");
+    audio.play();
+}
 
 const numParticles = AMOUNTX * AMOUNTY;
 
@@ -86,6 +100,19 @@ const material = new ShaderMaterial( {
 particles = new Points( geometry, material );
 scene.add( particles );
 
+var sphere_geometry = new IcosahedronGeometry(20, 3);
+var Smaterial = new MeshStandardMaterial( {
+    //change color of blob here
+    color: '#87ceeb',
+
+    roughness: 0.45,
+    metalness: 0.75,
+
+});
+
+var sphere = new Mesh(sphere_geometry, Smaterial);
+scene.add (sphere);
+
 // Set up renderer, canvas, and minor CSS adjustments
 renderer.setPixelRatio(window.devicePixelRatio);
 const canvas = renderer.domElement;
@@ -129,6 +156,26 @@ const onAnimationFrameHandler = (timeStamp) => {
 
     }
 
+     //can change this for bubble frequency
+     var time = performance.now() * 0.003;
+
+     // change 'k' value for more spikes
+    var k = 1;
+    for (var s = 0; s < sphere.geometry.vertices.length; s++) {
+        var p = sphere.geometry.vertices[s];
+        var n = new perlinNoise3d();
+        var noise = n.noiseSeed(27);
+        let perlin = noise.get(p.x * k + time, p.y * k, p.z * k);
+
+        //increase this for more extreme ball
+        //0.7 is default/low energy
+        p.normalize().multiplyScalar(1 + 0.7 * perlin);
+    }
+    sphere.geometry.computeVertexNormals();
+    sphere.geometry.normalsNeedUpdate = true;
+    sphere.geometry.verticesNeedUpdate = true;
+
+
     particles.geometry.attributes.position.needsUpdate = true;
     particles.geometry.attributes.scale.needsUpdate = true;
 
@@ -139,6 +186,7 @@ const onAnimationFrameHandler = (timeStamp) => {
     window.requestAnimationFrame(onAnimationFrameHandler);
 };
 window.requestAnimationFrame(onAnimationFrameHandler);
+
 
 // Resize Handler
 const windowResizeHandler = () => {

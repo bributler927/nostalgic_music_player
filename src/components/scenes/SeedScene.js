@@ -1,6 +1,5 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color,Fog } from 'three';
-import { Flower, Land, Blob } from 'objects';
+import { Scene, Color, Fog } from 'three';
 import { BasicLights } from 'lights';
 
 class SeedScene extends Scene {
@@ -11,9 +10,8 @@ class SeedScene extends Scene {
         // Init state
         this.state = {
             gui: new Dat.GUI(), // Create GUI for scene
-            rotationSpeed: 1,
-            updateList: [],
-            song: ["no song"],
+            //rotationSpeed: 1,
+            song: "",
         };
 
         // Set background to a nice color
@@ -27,32 +25,18 @@ class SeedScene extends Scene {
 
 
         // Add meshes to scene
-        //const land = new Land();
-        //const flower = new Flower(this);
         const lights = new BasicLights();
-        const blob = new Blob(this);
-        this.add(lights, blob);
+        this.add(lights);
         
         // Populate GUI
-        this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
-        this.state.gui.add(this.state, 'song', ["no song", "Hallelujah by Jeff Buckley",
-                                                "The Chain by Fleetwood Mac", "Hey Ya by Outkast",
-                                            "Patience by Guns N' Roses", "Take Me Home, Country Roads by John Denver",
-                                        "Bridge Over Troubled Water by Simon and Garfunkel", "Despacito by Luisi Fonsi"]);
-    }
-
-    addToUpdateList(object) {
-        this.state.updateList.push(object);
+        //this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
+        this.state.gui.add(this.state, 'song', ['Bridge Over Troubled Water - Simon & Garfunkel', 'Despacito - Luis Fonsi', 
+                                                'Hallelujah - Jeff Buckley', 'Hey Ya - Outkast', "Patience - Guns N' Roses", 
+                                                'The Chain - Fleetwood Mac', 'Take Me Home Country Roads - John Denver']);
     }
 
     update(timeStamp) {
-        const { rotationSpeed, updateList } = this.state;
-        this.rotation.y = (rotationSpeed * timeStamp) / 10000;
-
-        // Call update for each object in the updateList
-        for (const obj of updateList) {
-            obj.update(timeStamp);
-        }
+        const { song } = this.state;
     }
 
     //blob.update();

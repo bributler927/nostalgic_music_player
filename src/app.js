@@ -15,8 +15,25 @@ import { currSong } from './components/scenes/SeedScene';
 import { chooseColor } from './components/adjustments';
 
 //import JSON file
-const json = require('./Spotify-2000.json');
-var data = JSON.parse(JSON.stringify(json));
+export var songList;
+async function getSongs() {
+    try {
+      const response = await fetch('../src/Spotify-2000.json');
+  
+      if (!response.ok) {
+        throw new Error(`Error! status: ${response.status}`);
+      }
+  
+      const result = await response.json();
+      callbackFunc(result);
+    } catch (err) {
+      console.log(err);
+    }
+}
+function callbackFunc(data) {
+    songList = data;
+}
+getSongs();
 
 // Initialize core ThreeJS components
 const SEPARATION = 70, AMOUNTX = 50, AMOUNTY = 50;

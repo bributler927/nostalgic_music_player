@@ -6,18 +6,85 @@
  * handles window resizes.
  *
  */
-import { WebGLRenderer, PerspectiveCamera, Vector3 } from 'three';
+import { WebGLRenderer, PerspectiveCamera, Vector3, BufferGeometry, BufferAttribute, ShaderMaterial, Color, Points } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SeedScene } from 'scenes';
 
+
 // Initialize core ThreeJS components
+const SEPARATION = 100, AMOUNTX = 50, AMOUNTY = 50;
+
 const scene = new SeedScene();
 const camera = new PerspectiveCamera();
 const renderer = new WebGLRenderer({ antialias: true });
+let particles,  count = 0;
+
 
 // Set up camera
 camera.position.set(6, 3, -10);
 camera.lookAt(new Vector3(0, 0, 0));
+
+const numParticles = AMOUNTX * AMOUNTY;
+
+const positions = new Float32Array( numParticles * 3 );
+const scales = new Float32Array( numParticles );
+
+let i = 0, j = 0;
+
+for ( let ix = 0; ix < AMOUNTX; ix ++ ) {
+
+    for ( let iy = 0; iy < AMOUNTY; iy ++ ) {
+
+        // idk I tried lowering the wave using x and z, had issues with that -- maybe im missing/misunderstanding
+        positions[ i ] = ix * SEPARATION - ( ( AMOUNTX * SEPARATION ) / 2 ); // x
+        positions[ i + 1 ] = 0; // y
+        positions[ i + 2 ] = iy * SEPARATION - ( ( AMOUNTY * SEPARATION ) / 2 ); // z
+
+        scales[ j ] = 1;
+
+        i += 3;
+        j ++;
+
+    }
+
+}
+
+const geometry = new BufferGeometry();
+geometry.setAttribute( 'position', new BufferAttribute( positions, 3 ) );
+geometry.setAttribute( 'scale', new BufferAttribute( scales, 1 ) );
+
+const material = new ShaderMaterial( {
+
+    uniforms: {
+        color: { value: new Color( 0xffffff  ) },
+    },
+    vertexShader: [
+        "attribute float scale;", 
+        "void main()",
+        "{",
+        "vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",
+        "gl_PointSize = scale * ( 300.0 / - mvPosition.z );",
+        "gl_Position = projectionMatrix * mvPosition;",
+        "}"
+        ].join("\n"),
+    fragmentShader: [
+        "uniform vec3 color;", 
+        "void main()",
+        "{",
+        "if ( length( gl_PointCoord - vec2( 0.5, 0.5 ) ) > 0.475 ) discard;",
+        "gl_FragColor = vec4( color, 1.0 );",
+        "}"
+    ].join("\n")
+
+    //vertexShader: document.getElementById( 'vertexshader' ).textContent,
+    //fragmentShader: document.getElementById( 'fragmentshader' ).textContent
+
+} );
+
+     //
+
+particles = new Points( geometry, material );
+scene.add( particles );
 
 // Set up renderer, canvas, and minor CSS adjustments
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -38,7 +105,36 @@ controls.update();
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
     controls.update();
-    renderer.render(scene, camera);
+    const positions = particles.geometry.attributes.position.array;
+    const scales = particles.geometry.attributes.scale.array;
+
+    let i = 0, j = 0;
+
+    for ( let ix = 0; ix < AMOUNTX; ix ++ ) {
+
+        for ( let iy = 0; iy < AMOUNTY; iy ++ ) {
+
+            // originally 50
+            positions[ i + 1 ] = ( Math.sin( ( ix + count ) * 0.3 ) * 40 ) +
+                            ( Math.sin( ( iy + count ) * 0.5 ) * 40 );
+
+            // originally times 20 -- if we make the multiplication numbers smaller, makes waves smaller/ tamer
+            scales[ j ] = ( Math.sin( ( ix + count ) * 0.3 ) + 1 ) * 20 +
+                            ( Math.sin( ( iy + count ) * 0.5 ) + 1 ) * 20;
+
+            i += 3;
+            j ++;
+
+        }
+
+    }
+
+    particles.geometry.attributes.position.needsUpdate = true;
+    particles.geometry.attributes.scale.needsUpdate = true;
+
+    renderer.render( scene, camera );
+
+    count += 0.1;
     scene.update && scene.update(timeStamp);
     window.requestAnimationFrame(onAnimationFrameHandler);
 };

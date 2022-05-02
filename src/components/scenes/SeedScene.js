@@ -2,8 +2,9 @@ import * as Dat from 'dat.gui';
 import { Scene, Color, Fog } from 'three';
 import { BasicLights } from 'lights';
 import { chooseColor } from '../adjustments';
-
+import {songList} from '../../app.js';
 export var currSong;
+export var songIndex;
 
 //save the wanted mp3 audios to their respective variables
 var patience = new Audio("src/components/sounds/Patience.mp3");
@@ -56,12 +57,23 @@ class SeedScene extends Scene {
             currSong = song;
             //calls song player helper function
             this.chooseSong();
+
+            if(songIndex != null) {
+                var energy = (songList.filter( element => element.Index=== songIndex)[0]["Energy"]);
+                var danceability = (songList.filter( element => element.Index=== songIndex)[0]["Danceability"]);
+                var BPM = (songList.filter( element => element.Index=== songIndex)[0]["Beats Per Minute (BPM)"]);
+                var loudness = (songList.filter( element => element.Index=== songIndex)[0]["Loudness (dB)"]);
+                var valence = (songList.filter( element => element.Index=== songIndex)[0]["Valence"]);
+                console.log(BPM);
+            
+            }
         }
     }
 
     //helper function that takes selected song and plays the audio
     chooseSong() {
         if (currSong == "Patience - Guns N' Roses") {
+            songIndex = 1399;
             //stop all other audios
             bridge.pause();
             despacito.pause();
@@ -75,6 +87,7 @@ class SeedScene extends Scene {
         }
         else if (currSong == 'Bridge Over Troubled Water - Simon & Garfunkel') {
             //stop all other audios
+            songIndex = 802;
             patience.pause();
             despacito.pause();
             hallelujah.pause();
@@ -87,6 +100,7 @@ class SeedScene extends Scene {
         }
         else if (currSong == 'Despacito - Luis Fonsi') {
             //stop all other audios
+            songIndex = 798;
             patience.pause();
             bridge.pause();
             hallelujah.pause();
@@ -99,6 +113,7 @@ class SeedScene extends Scene {
         }
         else if (currSong == 'Hallelujah - Jeff Buckley') {
             //stop all other audios
+            songIndex = 1632;
             patience.pause();
             bridge.pause();
             despacito.pause();
@@ -111,6 +126,7 @@ class SeedScene extends Scene {
         }
         else if (currSong == 'Hey Ya - Outkast') {
             //stop all other audios
+            songIndex = 280;
             patience.pause();
             bridge.pause();
             despacito.pause();
@@ -123,6 +139,7 @@ class SeedScene extends Scene {
         }
         else if (currSong == 'The Chain - Fleetwood Mac') {
             //stop all other audios
+            songIndex = 1038;
             patience.pause();
             bridge.pause();
             despacito.pause();
@@ -135,6 +152,7 @@ class SeedScene extends Scene {
         }
         else if (currSong == 'Take Me Home Country Roads - John Denver') {
             //stop all other audios
+            songIndex = 1722;
             patience.pause();
             bridge.pause();
             despacito.pause();
@@ -147,6 +165,7 @@ class SeedScene extends Scene {
         }
         else {
             //stop all songs if no songs is selected
+            songIndex = null;
             patience.pause();
             bridge.pause();
             despacito.pause();

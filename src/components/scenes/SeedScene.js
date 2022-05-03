@@ -5,7 +5,15 @@ import { Scene, Color, Fog, IcosahedronGeometry,
 import { BasicLights } from 'lights';
 import { chooseColor } from '../adjustments';
 import {songList} from '../../app.js';
+
 export var currSong;
+var currValence;
+var currDanceability;
+var currEnergy;
+var currBPM;
+
+
+
 export var songIndex;
 
 //save the wanted mp3 audios to their respective variables
@@ -23,9 +31,9 @@ var sphere_geometry = new IcosahedronGeometry(20, 3);
             //change color of blob here
             color: 'white',
             roughness: 0.45,
-            metalness: 0.75,
+            metalness: 0.90,
                                                 
-            });
+        });
 var sphere = new Mesh(sphere_geometry, Smaterial);
 let particles,  count = 0;
 const SEPARATION = 70, AMOUNTX = 50, AMOUNTY = 50;
@@ -46,7 +54,7 @@ class SeedScene extends Scene {
         this.state.gui.width = 530;
 
         // Set background to a nice color
-        this.background = chooseColor(99);
+        this.background = chooseColor("gray");
 
         // maybe make a fog so points don't look weird, unsure if this will work though
         const color = 0xFFFFFF;  // white
@@ -137,16 +145,39 @@ class SeedScene extends Scene {
                 var BPM = (songList.filter( element => element.Index=== songIndex)[0]["Beats Per Minute (BPM)"]);
                 var loudness = (songList.filter( element => element.Index=== songIndex)[0]["Loudness (dB)"]);
                 var valence = (songList.filter( element => element.Index=== songIndex)[0]["Valence"]);
-                console.log(BPM);
-            
+                
+                currValence = valence;
+                currDanceability = danceability;
+                currBPM = BPM;
+                currEnergy = energy;
             }
+
+            currValence = valence;
         }
 
-        //can change this for bubble frequency
-        var time = performance.now() * 0.001;
+        this.background = chooseColor(valence, false);
 
+        //can change this for bubble frequency
+        
+        if (currBPM != null) {
+            var time = performance.now() * 0.00006 * currBPM / 10;
+        }
+        else {
+            var time = performance.now() * 0.000001;
+        }
+
+        //console.log(currBPM);
         // change 'k' value for more spikes
-        var k = 1;
+        
+        if (currDanceability != null) {
+            var k = currDanceability * 2 / 100;
+        }
+        else {
+            var k = 0;
+        }
+
+        sphere.material.color = chooseColor(valence, true);
+
         for (var s = 0; s < sphere.geometry.vertices.length; s++) {
             var p = sphere.geometry.vertices[s];
             var n = new perlinNoise3d();
@@ -154,9 +185,18 @@ class SeedScene extends Scene {
             let perlin = noise.get(p.x * k + time, p.y * k, p.z * k);
 
             //increase this for more extreme ball
-            //0.7 is default/low energy
-            p.normalize().multiplyScalar(1 + 0.7 * perlin);
+            //0.5 is default/low energy
+            if (currEnergy != null) {
+                var sc = 0.5 + currEnergy / 150;
+            }
+            else {
+                var sc = 0;
+            } 
+            p.normalize().multiplyScalar(2.5 + sc * perlin);
         }
+
+        //console.log(sphere);
+        //debugger
         sphere.geometry.computeVertexNormals();
         sphere.geometry.normalsNeedUpdate = true;
         sphere.geometry.verticesNeedUpdate = true;

@@ -134,6 +134,11 @@ class SeedScene extends Scene {
     update(timeStamp) {
         const { song } = this.state;
         //if the song has changed, play this new song
+        var energy;
+        var danceability;
+        var BPM = 30;
+        var loudness = 20; // initialize to 20 just for wave
+        var valence;
         if (song != currSong) {
             currSong = song;
             //calls song player helper function
@@ -204,18 +209,19 @@ class SeedScene extends Scene {
         const scales = particles.geometry.attributes.scale.array;
 
         let i = 0, j = 0;
+        console.log(loudness);
 
         for ( let ix = 0; ix < AMOUNTX; ix ++ ) {
 
             for ( let iy = 0; iy < AMOUNTY; iy ++ ) {
 
                 // originally 50
-                positions[ i + 1 ] = ( Math.sin( ( ix + count ) * 0.3 ) *80 ) +
-                                ( Math.sin( ( iy + count ) * 0.5 ) * 80 );
+                positions[ i + 1 ] = ( Math.sin( ( ix + count ) * 0.3 ) *BPM ) +
+                                ( Math.sin( ( iy + count ) * 0.5 ) *BPM );
 
                 // originally times 20 -- if we make the multiplication numbers smaller, makes waves smaller/ tamer
-                scales[ j ] = ( Math.sin( ( ix + count ) * 0.3 ) + 1 ) * 15 +
-                                ( Math.sin( ( iy + count ) * 0.5 ) + 1 ) * 20;
+                scales[ j ] = ( Math.sin( ( ix + count ) * 0.3 ) + 1 ) * 30 +
+                                ( Math.sin( ( iy + count ) * 0.5 ) + 1 ) * 30;
 
                 i += 3;
                 j ++;
@@ -227,7 +233,7 @@ class SeedScene extends Scene {
         particles.geometry.attributes.position.needsUpdate = true;
         particles.geometry.attributes.scale.needsUpdate = true;
 
-        count += 0.1;
+        count += BPM/950;
     }
 
     //helper function that takes selected song and plays the audio

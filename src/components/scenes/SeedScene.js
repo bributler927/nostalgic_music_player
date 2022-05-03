@@ -54,7 +54,7 @@ class SeedScene extends Scene {
         this.state.gui.width = 530;
 
         // Set background to a nice color
-        this.background = chooseColor("gray");
+        this.background = new Color("gray");
 
         // maybe make a fog so points don't look weird, unsure if this will work though
         const color = 0xFFFFFF;  // white
@@ -166,9 +166,11 @@ class SeedScene extends Scene {
         
         if (currBPM != null) {
             var time = performance.now() * 0.00006 * currBPM / 10;
+            var waveBPM = currBPM;
         }
         else {
             var time = performance.now() * 0.000001;
+            var waveBPM = 0;
         }
 
         //console.log(currBPM);
@@ -181,7 +183,13 @@ class SeedScene extends Scene {
             var k = 0;
         }
 
-        sphere.material.color = chooseColor(valence, true);
+        if (currValence != null) {
+            var col = chooseColor(currValence, true);
+        }
+        else {
+            var col = new Color("white");
+        }
+        sphere.material.color = col;
 
         for (var s = 0; s < sphere.geometry.vertices.length; s++) {
             var p = sphere.geometry.vertices[s];
@@ -197,7 +205,7 @@ class SeedScene extends Scene {
             else {
                 var sc = 0;
             } 
-            p.normalize().multiplyScalar(2.5 + sc * perlin);
+            p.normalize().multiplyScalar(1.5 + sc * perlin);
         }
 
         //console.log(sphere);
@@ -209,15 +217,15 @@ class SeedScene extends Scene {
         const scales = particles.geometry.attributes.scale.array;
 
         let i = 0, j = 0;
-        console.log(loudness);
+        //console.log(loudness);
 
         for ( let ix = 0; ix < AMOUNTX; ix ++ ) {
 
             for ( let iy = 0; iy < AMOUNTY; iy ++ ) {
 
                 // originally 50
-                positions[ i + 1 ] = ( Math.sin( ( ix + count ) * 0.3 ) *BPM ) +
-                                ( Math.sin( ( iy + count ) * 0.5 ) *BPM );
+                positions[ i + 1 ] = ( Math.sin( ( ix + count ) * 0.3 ) * waveBPM ) +
+                                ( Math.sin( ( iy + count ) * 0.5 ) * waveBPM );
 
                 // originally times 20 -- if we make the multiplication numbers smaller, makes waves smaller/ tamer
                 scales[ j ] = ( Math.sin( ( ix + count ) * 0.3 ) + 1 ) * 30 +

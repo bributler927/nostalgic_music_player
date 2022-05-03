@@ -15,7 +15,7 @@ export function chooseColor(valence, isSphere) {
     }
     //if sphere
     else if (valence <= 19 && isSphere == true ) {
-        return new Color("blueviolet");
+        return new Color("purple");
     }
 
 

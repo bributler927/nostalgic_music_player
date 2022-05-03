@@ -62,8 +62,7 @@ class SeedScene extends Scene {
         const far = 100;
         //this.fog = new Fog(color, near, far);
         // Add meshes to scene
-        const lights = new BasicLights();
-        this.add(lights);
+       
         this.add(sphere);
         const numParticles = AMOUNTX * AMOUNTY;
 

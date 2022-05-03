@@ -7,7 +7,7 @@
  *
  */
 import { WebGLRenderer, PerspectiveCamera, Vector3, BufferGeometry, BufferAttribute, ShaderMaterial, Color, 
-            Points, IcosahedronGeometry, MeshStandardMaterial, Mesh, Audio } from 'three';
+            Points, IcosahedronGeometry, MeshStandardMaterial, AmbientLight, PointLight, Mesh, Audio } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SeedScene } from 'scenes';
 import perlinNoise3d from 'perlin-noise-3d';
@@ -41,13 +41,19 @@ const scene = new SeedScene();
 const camera = new PerspectiveCamera();
 const renderer = new WebGLRenderer({ antialias: true });
 
+
 // Set up camera
 // adjusted to move the wave behind the blob
 camera.position.set(20, 0, -5);
 camera.lookAt(new Vector3(0, 0, 0));
+scene.add(camera);
 
+// ambient
+scene.add( new AmbientLight( 0xffffff, 2) ); // optional
 
-
+// light
+var light = new PointLight( 0xffffff, 1.5 );
+camera.add( light );
 
      //
 

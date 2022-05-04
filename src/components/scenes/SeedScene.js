@@ -24,6 +24,11 @@ var despacito = new Audio("src/components/sounds/Despacito.mp3");
 var heyya = new Audio("src/components/sounds/Hey_Ya!.mp3");
 var country = new Audio("src/components/sounds/Take_Me_Home,Country_Roads.mp3");
 var chain = new Audio("src/components/sounds/The_Chain.mp3");
+//second set of Songs
+var eight = new Audio("src/components/sounds/EightDaysAWeek.mp3");
+var diggity = new Audio("src/components/sounds/NoDiggity.mp3");
+var rocketman = new Audio("src/components/sounds/Rocketman.mp3");
+var imm = new Audio("src/components/sounds/MyImmortal.mp3");
 
 //add sphere to scene
 var sphere_geometry = new IcosahedronGeometry(20, 3);
@@ -124,8 +129,9 @@ class SeedScene extends Scene {
         // Populate GUI
         //this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
         this.state.gui.add(this.state, 'song', ['No Song', 'Bridge Over Troubled Water - Simon & Garfunkel', 'Despacito - Luis Fonsi', 
-                                                'Hallelujah - Jeff Buckley', 'Hey Ya - Outkast', "Patience - Guns N' Roses", 
-                                                'The Chain - Fleetwood Mac', 'Take Me Home Country Roads - John Denver']);
+                                                'Eight Days A Week - The Beatles', 'Hallelujah - Jeff Buckley', 
+                                                'Hey Ya - Outkast', 'My Immortal - Evanescence', 'No Diggity - Blackstreet', "Patience - Guns N' Roses",
+                                                'Rocket Man - Elton John', 'The Chain - Fleetwood Mac', 'Take Me Home Country Roads - John Denver']);
 
 
     }
@@ -254,6 +260,10 @@ class SeedScene extends Scene {
             heyya.pause();
             chain.pause();
             country.pause();
+            eight.pause();
+            diggity.pause();
+            imm.pause();
+            rocketman.pause();
 
             //play wanted song
             patience.play();
@@ -267,6 +277,10 @@ class SeedScene extends Scene {
             heyya.pause();
             chain.pause();
             country.pause();
+            eight.pause();
+            diggity.pause();
+            imm.pause();
+            rocketman.pause();
 
             //play wanted song
             bridge.play();
@@ -280,6 +294,10 @@ class SeedScene extends Scene {
             heyya.pause();
             chain.pause();
             country.pause();
+            eight.pause();
+            diggity.pause();
+            imm.pause();
+            rocketman.pause();
 
             //play wanted song
             despacito.play();
@@ -293,6 +311,10 @@ class SeedScene extends Scene {
             heyya.pause();
             chain.pause();
             country.pause();
+            eight.pause();
+            diggity.pause();
+            imm.pause();
+            rocketman.pause();
 
             //play wanted song
             hallelujah.play();
@@ -306,6 +328,10 @@ class SeedScene extends Scene {
             hallelujah.pause();
             chain.pause();
             country.pause();
+            eight.pause();
+            diggity.pause();
+            imm.pause();
+            rocketman.pause();
 
             //play wanted song
             heyya.play();
@@ -319,6 +345,10 @@ class SeedScene extends Scene {
             hallelujah.pause();
             heyya.pause();
             country.pause();
+            eight.pause();
+            diggity.pause();
+            imm.pause();
+            rocketman.pause();
 
             //play wanted song
             chain.play();
@@ -332,9 +362,81 @@ class SeedScene extends Scene {
             hallelujah.pause();
             heyya.pause();
             chain.pause();
+            eight.pause();
+            diggity.pause();
+            imm.pause();
+            rocketman.pause();
 
             //play wanted song
             country.play();
+        }
+        else if (currSong == 'No Diggity - Blackstreet')  {
+            //stop all other audios
+            songIndex = 1712;
+            patience.pause();
+            bridge.pause();
+            despacito.pause();
+            hallelujah.pause();
+            heyya.pause();
+            chain.pause();
+            eight.pause();
+            country.pause();
+            imm.pause();
+            rocketman.pause();
+
+            //play wanted song
+            diggity.play();
+        }
+        else if (currSong == 'Rocket Man - Elton John')  {
+            //stop all other audios
+            songIndex = 885;
+            patience.pause();
+            bridge.pause();
+            despacito.pause();
+            hallelujah.pause();
+            heyya.pause();
+            chain.pause();
+            eight.pause();
+            country.pause();
+            imm.pause();
+            diggity.pause();
+
+            //play wanted song
+            rocketman.play();
+        }
+        else if (currSong == 'My Immortal - Evanescence')  {
+            //stop all other audios
+            songIndex = 166;
+            patience.pause();
+            bridge.pause();
+            despacito.pause();
+            hallelujah.pause();
+            heyya.pause();
+            chain.pause();
+            eight.pause();
+            country.pause();
+            diggity.pause();
+            rocketman.pause();
+
+            //play wanted song
+            imm.play();
+        }
+        else if (currSong == 'Eight Days A Week - The Beatles')  {
+            //stop all other audios
+            songIndex = 1847;
+            patience.pause();
+            bridge.pause();
+            despacito.pause();
+            hallelujah.pause();
+            heyya.pause();
+            chain.pause();
+            diggity.pause();
+            country.pause();
+            imm.pause();
+            rocketman.pause();
+
+            //play wanted song
+            eight.play();
         }
         else {
             //stop all songs if no songs is selected
@@ -346,6 +448,10 @@ class SeedScene extends Scene {
             heyya.pause();
             chain.pause();
             country.pause();
+            eight.pause();
+            diggity.pause();
+            imm.pause();
+            rocketman.pause();
         }
     }
 

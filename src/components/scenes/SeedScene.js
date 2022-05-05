@@ -17,18 +17,7 @@ var currBPM;
 export var songIndex;
 
 //save the wanted mp3 audios to their respective variables
-var patience = new Audio("src/components/sounds/Patience.mp3");
-var bridge = new Audio("src/components/sounds/Bridge_Over_Troubled_Water.mp3");
-var hallelujah = new Audio("src/components/sounds/Hallelujah.mp3");
-var despacito = new Audio("src/components/sounds/Despacito.mp3");
-var heyya = new Audio("src/components/sounds/Hey_Ya!.mp3");
-var country = new Audio("src/components/sounds/Take_Me_Home,Country_Roads.mp3");
-var chain = new Audio("src/components/sounds/The_Chain.mp3");
-//second set of Songs
-var eight = new Audio("src/components/sounds/EightDaysAWeek.mp3");
-var diggity = new Audio("src/components/sounds/NoDiggity.mp3");
-var rocketman = new Audio("src/components/sounds/Rocketman.mp3");
-var imm = new Audio("src/components/sounds/MyImmortal.mp3");
+
 
 //add sphere to scene
 var sphere_geometry = new IcosahedronGeometry(20, 3);
@@ -42,6 +31,9 @@ var sphere_geometry = new IcosahedronGeometry(20, 3);
 var sphere = new Mesh(sphere_geometry, Smaterial);
 let particles,  count = 0;
 const SEPARATION = 70, AMOUNTX = 50, AMOUNTY = 50;
+
+var context = new AudioContext(),sourceNode, analyser, audio;
+
 
 class SeedScene extends Scene {
     constructor() {
@@ -145,6 +137,9 @@ class SeedScene extends Scene {
         var loudness = 20; // initialize to 20 just for wave
         var valence;
         if (song != currSong) {
+            if (audio) audio.remove();
+            if (sourceNode) sourceNode.disconnect();
+            
             currSong = song;
             //calls song player helper function
             this.chooseSong();
@@ -248,210 +243,106 @@ class SeedScene extends Scene {
 
         count += BPM/950;
     }
+    setupAudioNodes() {
+        analyser = (analyser || context.createAnalyser());
+    
+        sourceNode = context.createMediaElementSource(audio);
+        sourceNode.connect(analyser);
+        sourceNode.connect(context.destination);
+    
+        audio.play();
+      }
 
     //helper function that takes selected song and plays the audio
     chooseSong() {
+
+        // sorry about this, this was the only way for the audio nodes to stop
+        // complaining about being connected to something that I already disconnected
+        var patience = new Audio("src/components/sounds/Patience.mp3");
+        var bridge = new Audio("src/components/sounds/Bridge_Over_Troubled_Water.mp3");
+        var hallelujah = new Audio("src/components/sounds/Hallelujah.mp3");
+        var despacito = new Audio("src/components/sounds/Despacito.mp3");
+        var heyya = new Audio("src/components/sounds/Hey_Ya!.mp3");
+        var country = new Audio("src/components/sounds/Take_Me_Home,Country_Roads.mp3");
+        var chain = new Audio("src/components/sounds/The_Chain.mp3");
+        //second set of Songs
+        var eight = new Audio("src/components/sounds/EightDaysAWeek.mp3");
+        var diggity = new Audio("src/components/sounds/NoDiggity.mp3");
+        var rocketman = new Audio("src/components/sounds/Rocketman.mp3");
+        var imm = new Audio("src/components/sounds/MyImmortal.mp3");
+
         if (currSong == "Patience - Guns N' Roses") {
             songIndex = 1399;
             //stop all other audios
-            bridge.pause();
-            despacito.pause();
-            hallelujah.pause();
-            heyya.pause();
-            chain.pause();
-            country.pause();
-            eight.pause();
-            diggity.pause();
-            imm.pause();
-            rocketman.pause();
+            audio =patience;
+            this.setupAudioNodes();
 
             //play wanted song
-            patience.play();
         }
         else if (currSong == 'Bridge Over Troubled Water - Simon & Garfunkel') {
             //stop all other audios
             songIndex = 802;
-            patience.pause();
-            despacito.pause();
-            hallelujah.pause();
-            heyya.pause();
-            chain.pause();
-            country.pause();
-            eight.pause();
-            diggity.pause();
-            imm.pause();
-            rocketman.pause();
-
-            //play wanted song
-            bridge.play();
+            audio = bridge;
+            this.setupAudioNodes();
         }
         else if (currSong == 'Despacito - Luis Fonsi') {
             //stop all other audios
             songIndex = 798;
-            patience.pause();
-            bridge.pause();
-            hallelujah.pause();
-            heyya.pause();
-            chain.pause();
-            country.pause();
-            eight.pause();
-            diggity.pause();
-            imm.pause();
-            rocketman.pause();
-
-            //play wanted song
-            despacito.play();
+            audio = despacito;
+            this.setupAudioNodes();
         }
         else if (currSong == 'Hallelujah - Jeff Buckley') {
             //stop all other audios
             songIndex = 1632;
-            patience.pause();
-            bridge.pause();
-            despacito.pause();
-            heyya.pause();
-            chain.pause();
-            country.pause();
-            eight.pause();
-            diggity.pause();
-            imm.pause();
-            rocketman.pause();
-
-            //play wanted song
-            hallelujah.play();
+            audio = hallelujah;
+            this.setupAudioNodes();
         }
         else if (currSong == 'Hey Ya - Outkast') {
             //stop all other audios
             songIndex = 280;
-            patience.pause();
-            bridge.pause();
-            despacito.pause();
-            hallelujah.pause();
-            chain.pause();
-            country.pause();
-            eight.pause();
-            diggity.pause();
-            imm.pause();
-            rocketman.pause();
-
-            //play wanted song
-            heyya.play();
+            audio = heyya;
+            this.setupAudioNodes();
         }
         else if (currSong == 'The Chain - Fleetwood Mac') {
             //stop all other audios
             songIndex = 1038;
-            patience.pause();
-            bridge.pause();
-            despacito.pause();
-            hallelujah.pause();
-            heyya.pause();
-            country.pause();
-            eight.pause();
-            diggity.pause();
-            imm.pause();
-            rocketman.pause();
-
-            //play wanted song
-            chain.play();
+            audio =chain;
+            this.setupAudioNodes();
         }
         else if (currSong == 'Take Me Home Country Roads - John Denver') {
             //stop all other audios
             songIndex = 1722;
-            patience.pause();
-            bridge.pause();
-            despacito.pause();
-            hallelujah.pause();
-            heyya.pause();
-            chain.pause();
-            eight.pause();
-            diggity.pause();
-            imm.pause();
-            rocketman.pause();
-
-            //play wanted song
-            country.play();
+            audio = country;
+            this.setupAudioNodes();
         }
         else if (currSong == 'No Diggity - Blackstreet')  {
             //stop all other audios
             songIndex = 1712;
-            patience.pause();
-            bridge.pause();
-            despacito.pause();
-            hallelujah.pause();
-            heyya.pause();
-            chain.pause();
-            eight.pause();
-            country.pause();
-            imm.pause();
-            rocketman.pause();
-
-            //play wanted song
-            diggity.play();
+            audio = diggity;
+            this.setupAudioNodes();
         }
         else if (currSong == 'Rocket Man - Elton John')  {
             //stop all other audios
             songIndex = 885;
-            patience.pause();
-            bridge.pause();
-            despacito.pause();
-            hallelujah.pause();
-            heyya.pause();
-            chain.pause();
-            eight.pause();
-            country.pause();
-            imm.pause();
-            diggity.pause();
-
-            //play wanted song
-            rocketman.play();
+            audio = rocketman;
+            this.setupAudioNodes();
         }
         else if (currSong == 'My Immortal - Evanescence')  {
             //stop all other audios
             songIndex = 166;
-            patience.pause();
-            bridge.pause();
-            despacito.pause();
-            hallelujah.pause();
-            heyya.pause();
-            chain.pause();
-            eight.pause();
-            country.pause();
-            diggity.pause();
-            rocketman.pause();
-
-            //play wanted song
-            imm.play();
+            audio = imm;
+            this.setupAudioNodes();
         }
         else if (currSong == 'Eight Days A Week - The Beatles')  {
             //stop all other audios
             songIndex = 1847;
-            patience.pause();
-            bridge.pause();
-            despacito.pause();
-            hallelujah.pause();
-            heyya.pause();
-            chain.pause();
-            diggity.pause();
-            country.pause();
-            imm.pause();
-            rocketman.pause();
-
-            //play wanted song
-            eight.play();
+            audio = eight;
+            this.setupAudioNodes();
         }
         else {
             //stop all songs if no songs is selected
             songIndex = null;
-            patience.pause();
-            bridge.pause();
-            despacito.pause();
-            hallelujah.pause();
-            heyya.pause();
-            chain.pause();
-            country.pause();
-            eight.pause();
-            diggity.pause();
-            imm.pause();
-            rocketman.pause();
+            audio = null;
         }
     }
 
@@ -459,3 +350,4 @@ class SeedScene extends Scene {
 }
 
 export default SeedScene;
+

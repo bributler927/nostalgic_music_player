@@ -1,0 +1,1 @@
+export { default as spotify_data } from './Spotify-2000.json';

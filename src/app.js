@@ -9,12 +9,13 @@
 import { WebGLRenderer, PerspectiveCamera, Vector3,  AmbientLight, PointLight} from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SeedScene } from 'scenes';
+import { spotify_data } from './json';
 
 //import JSON file
 export var songList;
 async function getSongs() {
     try {
-      const response = await fetch('../src/Spotify-2000.json');
+      const response = await fetch(spotify_data);
   
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);

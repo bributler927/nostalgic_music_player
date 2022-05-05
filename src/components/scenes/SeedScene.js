@@ -34,7 +34,9 @@ var sphere = new Mesh(sphere_geometry, Smaterial);
 let particles,  count = 0;
 const SEPARATION = 70, AMOUNTX = 50, AMOUNTY = 50;
 
-var context = new AudioContext(),sourceNode, analyser, audio;
+if (currSong != "No Song") {
+    var context = new AudioContext(),sourceNode, analyser, audio;
+}
 var noise = new SimplexNoise();
 var icosahedronGeometry = new IcosahedronGeometry(0.5, 5);
     var lambertMaterial = new MeshLambertMaterial({

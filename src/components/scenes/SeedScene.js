@@ -2,10 +2,11 @@ import * as Dat from 'dat.gui';
 import { Scene, Color, Fog, IcosahedronGeometry, 
         MeshStandardMaterial, Mesh, BufferGeometry,MeshLambertMaterial, BufferAttribute, ShaderMaterial,  
         Points } from 'three';
-import { BasicLights } from 'lights';
 import { chooseColor } from '../adjustments';
 import {songList} from '../../app.js';
 import SimplexNoise from 'simplex-noise';
+import perlinNoise3d from 'perlin-noise-3d';
+import { bridge, despacito, eight, hallelujah, heyya, immortal, diggity, patience, rocket,country,chain } from '../sounds';
 
 export var currSong;
 var currValence;
@@ -35,7 +36,7 @@ const SEPARATION = 70, AMOUNTX = 50, AMOUNTY = 50;
 
 var context = new AudioContext(),sourceNode, analyser, audio;
 var noise = new SimplexNoise();
-var icosahedronGeometry = new IcosahedronGeometry(1, 4);
+var icosahedronGeometry = new IcosahedronGeometry(0.5, 5);
     var lambertMaterial = new MeshLambertMaterial({
         color: 0xff00ee,
         wireframe: true
@@ -153,6 +154,14 @@ class SeedScene extends Scene {
         if (song != currSong) {
             if (audio) audio.remove();
             if (sourceNode) sourceNode.disconnect();
+            this.remove(ball);
+            icosahedronGeometry=  new IcosahedronGeometry(0.5, 5);
+            lambertMaterial = new MeshLambertMaterial({
+                color: 0xff00ee,
+                wireframe: true
+            });
+            ball = new Mesh(icosahedronGeometry, lambertMaterial);
+            this.add(ball);
             
             currSong = song;
             //calls song player helper function
@@ -296,69 +305,69 @@ class SeedScene extends Scene {
         if (currSong == "Patience - Guns N' Roses") {
             songIndex = 1399;
 
-            audio = new Audio("src/components/sounds/Patience.mp3");
+            audio = new Audio(patience);
             this.setupAudioNodes();
 
         }
         else if (currSong == 'Bridge Over Troubled Water - Simon & Garfunkel') {
             //stop all other audios
             songIndex = 802;
-            audio = new Audio("src/components/sounds/Bridge_Over_Troubled_Water.mp3");
+            audio = new Audio(bridge);
             this.setupAudioNodes();
         }
         else if (currSong == 'Despacito - Luis Fonsi') {
             //stop all other audios
             songIndex = 798;
-            audio = new Audio("src/components/sounds/Despacito.mp3");
+            audio = new Audio(despacito);
 
             this.setupAudioNodes();
         }
         else if (currSong == 'Hallelujah - Jeff Buckley') {
             //stop all other audios
             songIndex = 1632;
-            audio = new Audio("src/components/sounds/Hallelujah.mp3");
+            audio = new Audio(hallelujah);
             this.setupAudioNodes();
         }
         else if (currSong == 'Hey Ya - Outkast') {
             //stop all other audios
             songIndex = 280;
-            audio = new Audio("src/components/sounds/Hey_Ya!.mp3");
+            audio = new Audio(heyya);
             this.setupAudioNodes();
         }
         else if (currSong == 'The Chain - Fleetwood Mac') {
             //stop all other audios
             songIndex = 1038;
-            audio = new Audio("src/components/sounds/The_Chain.mp3");
+            audio = new Audio(chain);
             this.setupAudioNodes();
         }
         else if (currSong == 'Take Me Home Country Roads - John Denver') {
             //stop all other audios
             songIndex = 1722;
-            audio = new Audio("src/components/sounds/Take_Me_Home,Country_Roads.mp3");
+            audio = new Audio(country);
             this.setupAudioNodes();
         }
         else if (currSong == 'No Diggity - Blackstreet')  {
             //stop all other audios
             songIndex = 1712;
-            audio = new Audio("src/components/sounds/NoDiggity.mp3");            ;
+            audio = new Audio(diggity);            
             this.setupAudioNodes();
         }
         else if (currSong == 'Rocket Man - Elton John')  {
             //stop all other audios
             songIndex = 885;
-            audio = new Audio("src/components/sounds/Rocketman.mp3");
+            audio = new Audio(rocket);
             this.setupAudioNodes();
         }
         else if (currSong == 'My Immortal - Evanescence')  {
             //stop all other audios
             songIndex = 166;
-            audio = new Audio("src/components/sounds/MyImmortal.mp3");
+            audio = new Audio(immortal);
             this.setupAudioNodes();
         }
         else if (currSong == 'Eight Days A Week - The Beatles')  {
             //stop all other audios
             songIndex = 1847;
-            audio = new Audio("src/components/sounds/EightDaysAWeek.mp3");
+            audio = new Audio(eight);
             this.setupAudioNodes();
         }
         else {
@@ -386,8 +395,8 @@ class SeedScene extends Scene {
             var time = window.performance.now();
             vertex.normalize();
             var rf = 0.00001;
-            var distance = ((offset + bassFr ) + noise.noise3D(vertex.x + time *rf*7, vertex.y +  time*rf*8, vertex.z + time*rf*9) * amp * treFr)/2;
-            vertex.multiplyScalar(distance - 1.5);
+            var distance = ((offset + bassFr ) + noise.noise3D(vertex.x + time *rf*7, vertex.y +  time*rf*8, vertex.z + time*rf*9) * amp * treFr)/3;
+            vertex.multiplyScalar(distance);
         });
         mesh.geometry.verticesNeedUpdate = true;
         mesh.geometry.normalsNeedUpdate = true;

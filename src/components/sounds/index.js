@@ -1,0 +1,11 @@
+export { default as chain } from './The_Chain.mp3';
+export { default as country } from './Take_Me_Home,Country_Roads.mp3';
+export { default as patience } from './Patience.mp3';
+export { default as bridge } from './Bridge_Over_Troubled_Water.mp3';
+export { default as despacito } from './Despacito.mp3';
+export { default as eight } from './EightDaysAWeek.mp3';
+export { default as hallelujah} from './Hallelujah.mp3';
+export { default as immortal } from './MyImmortal.mp3';
+export { default as diggity } from './NoDiggity.mp3';
+export { default as rocket } from './Rocketman.mp3';
+export { default as heyya } from './Hey_Ya.mp3';

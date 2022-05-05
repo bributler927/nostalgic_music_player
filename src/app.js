@@ -6,13 +6,9 @@
  * handles window resizes.
  *
  */
-import { WebGLRenderer, PerspectiveCamera, Vector3, BufferGeometry, BufferAttribute, ShaderMaterial, Color, 
-            Points, IcosahedronGeometry, MeshStandardMaterial, AmbientLight, PointLight, Mesh, Audio } from 'three';
+import { WebGLRenderer, PerspectiveCamera, Vector3,  AmbientLight, PointLight} from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SeedScene } from 'scenes';
-import perlinNoise3d from 'perlin-noise-3d';
-import { currSong } from './components/scenes/SeedScene';
-import { chooseColor } from './components/adjustments';
 
 //import JSON file
 export var songList;
@@ -54,8 +50,6 @@ scene.add( new AmbientLight( 0xffffff, 2) ); // optional
 // light
 var light = new PointLight( 0xffffff, 1.5 );
 camera.add( light );
-
-     //
 
 
 

@@ -387,7 +387,7 @@ class SeedScene extends Scene {
             vertex.normalize();
             var rf = 0.00001;
             var distance = ((offset + bassFr ) + noise.noise3D(vertex.x + time *rf*7, vertex.y +  time*rf*8, vertex.z + time*rf*9) * amp * treFr)/2;
-            vertex.multiplyScalar(distance);
+            vertex.multiplyScalar(distance - 1.5);
         });
         mesh.geometry.verticesNeedUpdate = true;
         mesh.geometry.normalsNeedUpdate = true;

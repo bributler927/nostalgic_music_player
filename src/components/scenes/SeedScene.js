@@ -1,10 +1,11 @@
 import * as Dat from 'dat.gui';
 import { Scene, Color, Fog, IcosahedronGeometry, 
-        MeshStandardMaterial, Mesh, BufferGeometry, BufferAttribute, ShaderMaterial,  
+        MeshStandardMaterial, Mesh, BufferGeometry,MeshLambertMaterial, BufferAttribute, ShaderMaterial,  
         Points } from 'three';
 import { BasicLights } from 'lights';
 import { chooseColor } from '../adjustments';
 import {songList} from '../../app.js';
+import SimplexNoise from 'simplex-noise';
 
 export var currSong;
 var currValence;
@@ -33,6 +34,15 @@ let particles,  count = 0;
 const SEPARATION = 70, AMOUNTX = 50, AMOUNTY = 50;
 
 var context = new AudioContext(),sourceNode, analyser, audio;
+var noise = new SimplexNoise();
+var icosahedronGeometry = new IcosahedronGeometry(2, 4);
+    var lambertMaterial = new MeshLambertMaterial({
+        color: 0xff00ee,
+        wireframe: true
+    });
+
+        var ball = new Mesh(icosahedronGeometry, lambertMaterial);
+    ball.position.set(0, 0, 0);
 
 
 class SeedScene extends Scene {
@@ -117,6 +127,10 @@ class SeedScene extends Scene {
         } );
         particles = new Points( geometry, material );
         this.add( particles );
+        this.add(ball);
+
+
+        
         
         // Populate GUI
         //this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
@@ -159,6 +173,31 @@ class SeedScene extends Scene {
 
             currValence = valence;
         }
+        if (analyser) {
+            analyser.fftSize = 512;
+            var bufferLength = analyser.frequencyBinCount;
+            var dataArray = new Uint8Array(bufferLength);
+            analyser.getByteFrequencyData(dataArray);
+
+            var lowerHalfArray = dataArray.slice(0, (dataArray.length/2) - 1);
+            var upperHalfArray = dataArray.slice((dataArray.length/2) - 1, dataArray.length - 1);
+
+            var overallAvg = avg(dataArray);
+            var lowerMax = max(lowerHalfArray);
+            var lowerAvg = avg(lowerHalfArray);
+            var upperMax = max(upperHalfArray);
+            var upperAvg = avg(upperHalfArray);
+
+            var lowerMaxFr = lowerMax / lowerHalfArray.length;
+            var lowerAvgFr = lowerAvg / lowerHalfArray.length;
+            var upperMaxFr = upperMax / upperHalfArray.length;
+            var upperAvgFr = upperAvg / upperHalfArray.length;
+
+            
+            this.makeRoughBall(ball, modulate(Math.pow(lowerMaxFr, 0.8), 0, 1, 0, 8), modulate(upperAvgFr, 0, 1, 0, 4));
+        }
+
+
 
         this.background = chooseColor(valence, false);
 
@@ -335,6 +374,23 @@ class SeedScene extends Scene {
         sourceNode.connect(context.destination);
     
         audio.play();
+        
+    }
+
+    makeRoughBall(mesh, bassFr, treFr) {
+        mesh.geometry.vertices.forEach(function (vertex, i) {
+            var offset = mesh.geometry.parameters.radius;
+            var amp = 7;
+            var time = window.performance.now();
+            vertex.normalize();
+            var rf = 0.00001;
+            var distance = ((offset + bassFr ) + noise.noise3D(vertex.x + time *rf*7, vertex.y +  time*rf*8, vertex.z + time*rf*9) * amp * treFr)/2;
+            vertex.multiplyScalar(distance);
+        });
+        mesh.geometry.verticesNeedUpdate = true;
+        mesh.geometry.normalsNeedUpdate = true;
+        mesh.geometry.computeVertexNormals();
+        mesh.geometry.computeFaceNormals();
     }
 
     //blob.update();
@@ -342,3 +398,31 @@ class SeedScene extends Scene {
 
 export default SeedScene;
 
+
+
+
+
+//initialise simplex noise instance
+
+  
+
+
+//some helper functions here
+function fractionate(val, minVal, maxVal) {
+    return (val - minVal)/(maxVal - minVal);
+}
+
+function modulate(val, minVal, maxVal, outMin, outMax) {
+    var fr = fractionate(val, minVal, maxVal);
+    var delta = outMax - outMin;
+    return outMin + (fr * delta);
+}
+
+function avg(arr){
+    var total = arr.reduce(function(sum, b) { return sum + b; });
+    return (total / arr.length);
+}
+
+function max(arr){
+    return arr.reduce(function(a, b){ return Math.max(a, b); })
+}

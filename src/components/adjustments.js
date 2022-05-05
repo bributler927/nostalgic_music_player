@@ -1,6 +1,9 @@
 import { Color } from 'three';
 
 export function chooseColor(valence, isSphere) {
+    if (valence == null) {
+        return new Color("gray");
+    }
     if (valence <= 9 && isSphere == false ) {
         return new Color("darkblue");
     }

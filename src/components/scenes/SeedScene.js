@@ -178,9 +178,13 @@ class SeedScene extends Scene {
                 currDanceability = danceability;
                 currBPM = BPM;
                 currEnergy = energy;
+            } else {
+                currValence = null;
+                currDanceability = null;
+                currBPM = null;
+                currEnergy = null;
             }
 
-            currValence = valence;
         }
         if (analyser) {
             analyser.fftSize = 512;
@@ -208,7 +212,7 @@ class SeedScene extends Scene {
 
 
 
-        this.background = chooseColor(valence, false);
+        this.background = chooseColor(currValence, false);
 
         //can change this for bubble frequency
         

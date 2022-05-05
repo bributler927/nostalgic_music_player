@@ -28,7 +28,6 @@
   "dependencies": {
     "dat.gui": "^0.7.7",
     "perlin-noise-3d": "^0.5.4",
-    "postprocessing": "^6.26.4",
     "simplex-noise": "^3.0.1",
     "three": "^0.116.1",
     "three-obj-loader": "^1.1.3",

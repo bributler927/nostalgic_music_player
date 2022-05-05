@@ -243,15 +243,7 @@ class SeedScene extends Scene {
 
         count += BPM/950;
     }
-    setupAudioNodes() {
-        analyser = (analyser || context.createAnalyser());
     
-        sourceNode = context.createMediaElementSource(audio);
-        sourceNode.connect(analyser);
-        sourceNode.connect(context.destination);
-    
-        audio.play();
-      }
 
     //helper function that takes selected song and plays the audio
     chooseSong() {
@@ -344,6 +336,16 @@ class SeedScene extends Scene {
             songIndex = null;
             audio = null;
         }
+    }
+
+    setupAudioNodes() {
+        analyser = (analyser || context.createAnalyser());
+    
+        sourceNode = context.createMediaElementSource(audio);
+        sourceNode.connect(analyser);
+        sourceNode.connect(context.destination);
+    
+        audio.play();
     }
 
     //blob.update();

@@ -250,85 +250,74 @@ class SeedScene extends Scene {
 
         // sorry about this, this was the only way for the audio nodes to stop
         // complaining about being connected to something that I already disconnected
-        var patience = new Audio("src/components/sounds/Patience.mp3");
-        var bridge = new Audio("src/components/sounds/Bridge_Over_Troubled_Water.mp3");
-        var hallelujah = new Audio("src/components/sounds/Hallelujah.mp3");
-        var despacito = new Audio("src/components/sounds/Despacito.mp3");
-        var heyya = new Audio("src/components/sounds/Hey_Ya!.mp3");
-        var country = new Audio("src/components/sounds/Take_Me_Home,Country_Roads.mp3");
-        var chain = new Audio("src/components/sounds/The_Chain.mp3");
-        //second set of Songs
-        var eight = new Audio("src/components/sounds/EightDaysAWeek.mp3");
-        var diggity = new Audio("src/components/sounds/NoDiggity.mp3");
-        var rocketman = new Audio("src/components/sounds/Rocketman.mp3");
-        var imm = new Audio("src/components/sounds/MyImmortal.mp3");
-
+        // So I had to just create a new audio when song switches.
+        
         if (currSong == "Patience - Guns N' Roses") {
             songIndex = 1399;
-            //stop all other audios
-            audio =patience;
+
+            audio = new Audio("src/components/sounds/Patience.mp3");
             this.setupAudioNodes();
 
-            //play wanted song
         }
         else if (currSong == 'Bridge Over Troubled Water - Simon & Garfunkel') {
             //stop all other audios
             songIndex = 802;
-            audio = bridge;
+            audio = new Audio("src/components/sounds/Bridge_Over_Troubled_Water.mp3");
             this.setupAudioNodes();
         }
         else if (currSong == 'Despacito - Luis Fonsi') {
             //stop all other audios
             songIndex = 798;
-            audio = despacito;
+            audio = new Audio("src/components/sounds/Despacito.mp3");
+
             this.setupAudioNodes();
         }
         else if (currSong == 'Hallelujah - Jeff Buckley') {
             //stop all other audios
             songIndex = 1632;
-            audio = hallelujah;
+            audio = new Audio("src/components/sounds/Hallelujah.mp3");
             this.setupAudioNodes();
         }
         else if (currSong == 'Hey Ya - Outkast') {
             //stop all other audios
             songIndex = 280;
-            audio = heyya;
+            audio = new Audio("src/components/sounds/Hey_Ya!.mp3");
             this.setupAudioNodes();
         }
         else if (currSong == 'The Chain - Fleetwood Mac') {
             //stop all other audios
             songIndex = 1038;
-            audio =chain;
+            audio = new Audio("src/components/sounds/The_Chain.mp3");
             this.setupAudioNodes();
         }
         else if (currSong == 'Take Me Home Country Roads - John Denver') {
             //stop all other audios
             songIndex = 1722;
-            audio = country;
+            audio = new Audio("src/components/sounds/Take_Me_Home,Country_Roads.mp3");
             this.setupAudioNodes();
         }
         else if (currSong == 'No Diggity - Blackstreet')  {
             //stop all other audios
             songIndex = 1712;
-            audio = diggity;
+            audio = new Audio("src/components/sounds/NoDiggity.mp3");            ;
             this.setupAudioNodes();
         }
         else if (currSong == 'Rocket Man - Elton John')  {
             //stop all other audios
             songIndex = 885;
-            audio = rocketman;
+            audio = new Audio("src/components/sounds/Rocketman.mp3");
             this.setupAudioNodes();
         }
         else if (currSong == 'My Immortal - Evanescence')  {
             //stop all other audios
             songIndex = 166;
-            audio = imm;
+            audio = new Audio("src/components/sounds/MyImmortal.mp3");
             this.setupAudioNodes();
         }
         else if (currSong == 'Eight Days A Week - The Beatles')  {
             //stop all other audios
             songIndex = 1847;
-            audio = eight;
+            audio = new Audio("src/components/sounds/EightDaysAWeek.mp3");
             this.setupAudioNodes();
         }
         else {

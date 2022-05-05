@@ -34,9 +34,7 @@ var sphere = new Mesh(sphere_geometry, Smaterial);
 let particles,  count = 0;
 const SEPARATION = 70, AMOUNTX = 50, AMOUNTY = 50;
 
-if (currSong != "No Song") {
-    var context = new AudioContext(),sourceNode, analyser, audio;
-}
+var context = new AudioContext(),sourceNode, analyser, audio;
 var noise = new SimplexNoise();
 var icosahedronGeometry = new IcosahedronGeometry(0.5, 5);
     var lambertMaterial = new MeshLambertMaterial({
@@ -300,9 +298,7 @@ class SeedScene extends Scene {
     //helper function that takes selected song and plays the audio
     chooseSong() {
 
-        // sorry about this, this was the only way for the audio nodes to stop
-        // complaining about being connected to something that I already disconnected
-        // So I had to just create a new audio when song switches.
+        context.resume();
         
         if (currSong == "Patience - Guns N' Roses") {
             songIndex = 1399;

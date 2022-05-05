@@ -35,7 +35,7 @@ const SEPARATION = 70, AMOUNTX = 50, AMOUNTY = 50;
 
 var context = new AudioContext(),sourceNode, analyser, audio;
 var noise = new SimplexNoise();
-var icosahedronGeometry = new IcosahedronGeometry(2, 4);
+var icosahedronGeometry = new IcosahedronGeometry(1, 4);
     var lambertMaterial = new MeshLambertMaterial({
         color: 0xff00ee,
         wireframe: true
@@ -229,6 +229,8 @@ class SeedScene extends Scene {
             var col = new Color("white");
         }
         sphere.material.color = col;
+
+        ball.material.color = col;
 
         for (var s = 0; s < sphere.geometry.vertices.length; s++) {
             var p = sphere.geometry.vertices[s];
@@ -425,4 +427,8 @@ function avg(arr){
 
 function max(arr){
     return arr.reduce(function(a, b){ return Math.max(a, b); })
+}
+
+function adjust(color, amount) {
+    return '#' + color.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
 }

@@ -42,7 +42,7 @@ export function chooseColor(valence, isSphere) {
     }
      //if sphere
      else if (valence <= 49 && isSphere == true ) {
-        return new Color("red");
+        return new Color("maroon");
     }
 
 
